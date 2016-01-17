@@ -70,9 +70,9 @@ def playerStandings():
     """
     db = connect()
     c = db.cursor()
-    c.execute("SELECT id, name, wins, matches
+    c.execute('''SELECT id, name, wins, matches
               FROM Standings
-              ORDER BY wins DESC;")
+              ORDER BY wins DESC;''') #Sorts the Standings view by wins
     standings = c.fetchall()
     db.close()
     return standings
@@ -88,7 +88,7 @@ def reportMatch(winner, loser):
     db = connect()
     c = db.cursor()
     c.execute("INSERT INTO Matches (winner, loser) VALUES (%s,%s);",
-              (winner, loser))
+              (winner, loser)) #Must be placed with the winner first
     db.commit()
     db.close()
 
@@ -111,6 +111,7 @@ def swissPairings():
     standings = playerStandings()
     pairings = []
     i = 0
+    #Loops through standings, pairing the remaining players with highest record
     while i < len(standings):
         pairings.append((standings[i][0], standings[i][1], standings[i+1][0],
                          standings[i+1][1]))
