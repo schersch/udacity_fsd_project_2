@@ -38,10 +38,12 @@ CREATE VIEW MatchCounts AS
     FROM Players JOIN Matches
     ON Players.id = Matches.winner OR Players.id = Matches.loser
     GROUP By Players.id;
-    
+
 -- Standings View
 -- Shows the number of wins and matches for each player
+-- coalesce function suggested by Udacity reviewer to populate null values with 0
 CREATE VIEW Standings AS
-    Select Players.id, Players.name, WinCounts.total as wins, MatchCounts.total as matches
-    FROM Players, MatchCounts, WinCounts
-    WHERE Players.id = WinCounts.id AND WinCounts.id = MatchCounts.id;
+    SELECT Players.id, Players.name, coalesce(WinCounts.total, 0) AS wins,
+           coalesce(MatchCounts.total, 0) AS matches 
+    FROM Players LEFT JOIN WinCounts ON Players.id = WinCounts.id
+    LEFT JOIN MatchCounts ON MatchCounts.id = WinCounts.id;
