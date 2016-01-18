@@ -46,4 +46,4 @@ CREATE VIEW Standings AS
     SELECT Players.id, Players.name, coalesce(WinCounts.total, 0) AS wins,
            coalesce(MatchCounts.total, 0) AS matches 
     FROM Players LEFT JOIN WinCounts ON Players.id = WinCounts.id
-    LEFT JOIN MatchCounts ON MatchCounts.id = WinCounts.id;
+    LEFT JOIN MatchCounts ON MatchCounts.id = Players.id;
